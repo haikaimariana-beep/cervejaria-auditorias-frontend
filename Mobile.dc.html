@@ -1,0 +1,494 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin:0; padding:0; }
+  body { font-family:'Public Sans', system-ui, -apple-system, sans-serif; color:#24211F; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,h4 { margin:0; font-family:'Space Grotesk','Public Sans',sans-serif; }
+  button { font-family:inherit; border:none; background:none; cursor:pointer; }
+  input, textarea { font-family:inherit; }
+  ::-webkit-scrollbar { width:0; height:0; }
+  .btn-primary { background:#B38335; color:#fff; padding:14px; border-radius:12px; font-weight:600; font-size:15px; width:100%; text-align:center; cursor:pointer; }
+  .btn-primary:hover { background:#9C6F28; }
+  .btn-primary:disabled, .btn-disabled { background:#E3DCD0; color:#A79E92; cursor:default; }
+  .btn-ghost { background:#F2EEE7; color:#24211F; padding:14px; border-radius:12px; font-weight:600; font-size:15px; width:100%; text-align:center; cursor:pointer; }
+  .btn-ghost:hover { background:#E9E3D8; }
+  .card { background:#fff; border:1px solid #E3DCD0; border-radius:14px; }
+  .row-hover:hover { background:#F7F4EE; }
+  .pill { flex:1; padding:13px 0; text-align:center; border-radius:10px; font-weight:600; font-size:13.5px; cursor:pointer; border:1.5px solid #E3DCD0; color:#453F39; }
+  .pill.active-sim { background:#3F7D52; border-color:#3F7D52; color:#fff; }
+  .pill.active-nao { background:#B23B34; border-color:#B23B34; color:#fff; }
+  .pill.active-na { background:#453F39; border-color:#453F39; color:#fff; }
+  .sev-chip { flex:1; padding:10px 0; text-align:center; border-radius:8px; font-weight:600; font-size:12.5px; cursor:pointer; border:1.5px solid #E3DCD0; color:#453F39; }
+  .textfield { border:1px solid #E3DCD0; border-radius:8px; padding:10px 12px; font-size:14px; color:#24211F; width:100%; }
+  .textfield:focus { outline:2px solid #D9A94C; border-color:#B38335; }
+  .chipf { padding:7px 16px; border-radius:20px; font-size:13px; font-weight:600; cursor:pointer; border:1px solid #E3DCD0; color:#6B6259; background:#fff; }
+  .chipf.active { background:#24211F; color:#fff; border-color:#24211F; }
+</style>
+</helmet>
+
+<div style="width:430px;min-height:900px;background:#F2EEE7;display:flex;align-items:center;justify-content:center;padding:28px 0;">
+  <div style="width:390px;height:844px;background:#24211F;border-radius:44px;padding:10px;flex-shrink:0;">
+    <div style="width:100%;height:100%;background:#FAF8F5;border-radius:34px;overflow:hidden;display:flex;flex-direction:column;">
+
+      <!-- LISTA -->
+      <sc-if value="{{isLista}}" hint-placeholder-val="{{ true }}">
+        <div style="padding:24px 20px 14px 20px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+            <div>
+              <div style="font-size:12px;color:#8C8377;">Olá,</div>
+              <h2 style="font-size:19px;font-weight:600;">Marcos Alves</h2>
+            </div>
+            <div style="width:38px;height:38px;border-radius:50%;background:#24211F;color:#E4C989;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;">MA</div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <div class="chipf {{filterTodasClass}}" onclick="{{setFilterTodas}}">Todas</div>
+            <div class="chipf {{filterAtrasadasClass}}" onclick="{{setFilterAtrasadas}}">Atrasadas</div>
+          </div>
+        </div>
+        <div style="flex:1;overflow:auto;padding:6px 20px 24px 20px;display:flex;flex-direction:column;gap:10px;">
+          <sc-for list="{{auditsList}}" as="a" hint-placeholder-count="3">
+            <div class="card row-hover" style="padding:16px;cursor:pointer;" onclick="{{a.onClick}}">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">
+                <div style="font-size:14.5px;font-weight:600;color:#24211F;flex:1;padding-right:8px;">{{a.unidade}}</div>
+                <span style="font-size:10.5px;font-weight:700;color:{{a.statusColor}};background:{{a.statusBg}};border-radius:6px;padding:3px 8px;white-space:nowrap;">{{a.statusLabel}}</span>
+              </div>
+              <div style="font-size:12.5px;color:#8C8377;">{{a.tipo}} · {{a.data}}</div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <!-- SECOES -->
+      <sc-if value="{{isSecoes}}" hint-placeholder-val="{{ false }}">
+        <div style="padding:22px 20px 16px 20px;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+            <div onclick="{{backToLista}}" style="cursor:pointer;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#24211F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"></path></svg>
+            </div>
+            <div>
+              <div style="font-size:11.5px;color:#8C8377;">Auditoria de Distribuidor</div>
+              <h3 style="font-size:16px;font-weight:600;">{{currentUnidade}}</h3>
+            </div>
+          </div>
+          <div style="height:6px;background:#E3DCD0;border-radius:4px;overflow:hidden;">
+            <div style="height:100%;background:#B38335;width:{{overallPct}}%;"></div>
+          </div>
+          <div style="font-size:11.5px;color:#8C8377;margin-top:6px;">{{answeredCount}} de {{totalCount}} perguntas respondidas</div>
+        </div>
+        <div style="flex:1;overflow:auto;padding:4px 20px;display:flex;flex-direction:column;gap:8px;">
+          <sc-for list="{{sectionsProgress}}" as="s" hint-placeholder-count="5">
+            <div class="card row-hover" style="padding:14px 16px;cursor:pointer;display:flex;align-items:center;gap:12px;" onclick="{{s.onClick}}">
+              <div style="width:9px;height:9px;border-radius:50%;background:{{s.dotColor}};flex-shrink:0;"></div>
+              <div style="flex:1;">
+                <div style="font-size:13.5px;font-weight:600;color:#24211F;">{{s.name}}</div>
+                <div style="font-size:11.5px;color:#8C8377;">{{s.answered}}/{{s.total}} respondidas</div>
+              </div>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B8AFA3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
+            </div>
+          </sc-for>
+        </div>
+        <div style="padding:16px 20px 22px 20px;">
+          <sc-if value="{{allDone}}" hint-placeholder-val="{{ false }}">
+            <button class="btn-primary" onclick="{{goResumo}}">Finalizar auditoria</button>
+          </sc-if>
+          <sc-if value="{{notAllDone}}" hint-placeholder-val="{{ true }}">
+            <div style="text-align:center;font-size:12px;color:#8C8377;">Responda todas as seções para finalizar</div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <!-- PERGUNTA -->
+      <sc-if value="{{isPergunta}}" hint-placeholder-val="{{ false }}">
+        <div style="padding:22px 20px 14px 20px;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+            <div onclick="{{backToSecoes}}" style="cursor:pointer;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#24211F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"></path></svg>
+            </div>
+            <div style="font-size:13.5px;font-weight:600;color:#24211F;">{{sectionName}}</div>
+          </div>
+          <div style="height:5px;background:#E3DCD0;border-radius:3px;overflow:hidden;">
+            <div style="height:100%;background:#B38335;width:{{sectionPct}}%;"></div>
+          </div>
+          <div style="font-size:11px;color:#8C8377;margin-top:6px;">Pergunta {{qIndexLabel}} de {{qTotalLabel}}</div>
+        </div>
+
+        <div style="flex:1;overflow:auto;padding:8px 20px;">
+          <div style="font-size:16.5px;font-weight:600;color:#24211F;line-height:1.4;margin-bottom:18px;">{{questionText}}</div>
+
+          <sc-if value="{{isSimNao}}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;gap:8px;margin-bottom:16px;">
+              <div class="pill {{pillSimClass}}" onclick="{{pickSim}}">Sim</div>
+              <div class="pill {{pillNaoClass}}" onclick="{{pickNao}}">Não</div>
+              <div class="pill {{pillNaClass}}" onclick="{{pickNa}}">N.A.</div>
+            </div>
+
+            <sc-if value="{{showNcForm}}" hint-placeholder-val="{{ false }}">
+              <div class="card" style="padding:16px;border-color:#E7B9B5;background:#FBEAE8;">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B23B34" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l9 15H3z"></path><path d="M12 10v4"></path><path d="M12 17h.01"></path></svg>
+                  <span style="font-size:12.5px;font-weight:700;color:#B23B34;">NC será gerada automaticamente</span>
+                </div>
+                <div style="font-size:12px;color:#8C4A44;margin-bottom:10px;">Classifique a severidade para registrar o achado:</div>
+                <div style="display:flex;gap:6px;margin-bottom:12px;">
+                  <div class="sev-chip" style="{{sevCriticaStyle}}" onclick="{{pickCritica}}">Crítica</div>
+                  <div class="sev-chip" style="{{sevMaiorStyle}}" onclick="{{pickMaior}}">Maior</div>
+                  <div class="sev-chip" style="{{sevMenorStyle}}" onclick="{{pickMenor}}">Menor</div>
+                </div>
+                <button class="{{confirmNcClass}}" onclick="{{confirmNcClick}}" style="padding:12px;border-radius:10px;font-weight:600;font-size:13.5px;width:100%;">Registrar não conformidade</button>
+              </div>
+            </sc-if>
+            <sc-if value="{{showNcConfirmed}}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;align-items:center;gap:8px;padding:12px;background:#FBEAE8;border-radius:10px;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#B23B34" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M8.5 12.5l2.2 2.2 4.8-5"></path></svg>
+                <span style="font-size:12.5px;color:#B23B34;font-weight:600;">Não conformidade registrada · severidade {{confirmedSeverity}}</span>
+              </div>
+            </sc-if>
+          </sc-if>
+
+          <sc-if value="{{isNumero}}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+              <input class="textfield" type="number" placeholder="0" value="{{numeroValue}}" onchange="{{setNumero}}" style="flex:1;font-size:18px;font-weight:600;">
+              <span style="font-size:14px;color:#6B6259;font-weight:600;">{{unidadeLabel}}</span>
+            </div>
+            <sc-if value="{{hasFaixa}}" hint-placeholder-val="{{ false }}">
+              <div style="font-size:12px;color:#8C8377;">Faixa recomendada: {{faixaLabel}}</div>
+            </sc-if>
+          </sc-if>
+
+          <sc-if value="{{isFoto}}" hint-placeholder-val="{{ false }}">
+            <div onclick="{{addEvidenceClick}}" style="border:1.5px dashed #D9CFC0;border-radius:12px;padding:28px;text-align:center;cursor:pointer;margin-bottom:14px;">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#B38335" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto 8px auto;display:block;"><path d="M4 8a2 2 0 0 1 2-2h1.5l1-1.5h7l1 1.5H18a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8z"></path><circle cx="12" cy="12.5" r="3.2"></circle></svg>
+              <div style="font-size:13px;color:#6B6259;font-weight:600;">Toque para capturar foto</div>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <sc-for list="{{evidenceThumbs}}" as="t" hint-placeholder-count="0">
+                <div style="width:56px;height:56px;border-radius:8px;background:#E3DCD0;display:flex;align-items:center;justify-content:center;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8C8377" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8a2 2 0 0 1 2-2h1.5l1-1.5h7l1 1.5H18a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8z"></path><circle cx="12" cy="12.5" r="3.2"></circle></svg>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{isTexto}}" hint-placeholder-val="{{ false }}">
+            <textarea class="textfield" style="height:120px;resize:none;" placeholder="Descreva aqui…" value="{{textoValue}}" onchange="{{setTexto}}"></textarea>
+          </sc-if>
+        </div>
+
+        <div style="padding:14px 20px 22px 20px;display:flex;gap:10px;">
+          <button class="btn-ghost" style="flex:1;" onclick="{{goPrev}}">Anterior</button>
+          <button class="{{nextBtnClass}}" style="flex:1;" onclick="{{goNextClick}}">Próxima</button>
+        </div>
+      </sc-if>
+
+      <!-- NC SUGESTAO -->
+      <sc-if value="{{isNcSugestao}}" hint-placeholder-val="{{ false }}">
+        <div style="padding:24px 20px 16px 20px;">
+          <h3 style="font-size:17px;font-weight:600;margin-bottom:4px;">Não conformidade registrada</h3>
+          <div style="font-size:12.5px;color:#8C8377;">{{ncSectionName}}</div>
+        </div>
+        <div style="flex:1;overflow:auto;padding:0 20px;display:flex;flex-direction:column;gap:14px;">
+          <div class="card" style="padding:16px;">
+            <div style="font-size:13.5px;color:#24211F;font-weight:600;margin-bottom:8px;">{{ncQuestionText}}</div>
+            <span style="font-size:11px;font-weight:700;color:{{ncSeverityColor}};background:{{ncSeverityBg}};border-radius:6px;padding:3px 9px;">Severidade: {{ncSeverityLabel}}</span>
+          </div>
+
+          <div class="card" style="padding:16px;border-color:#D9A94C;background:#FBF6EB;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8C6726" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.6 4.4L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.6z"></path><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"></path></svg>
+              <span style="font-size:12.5px;font-weight:700;color:#8C6726;">Sugestão de ação por IA</span>
+            </div>
+            <div style="font-size:13px;color:#453F39;line-height:1.55;margin-bottom:8px;">Instalar sensor de temperatura com alarme sonoro, prática já adotada com sucesso em unidade semelhante.</div>
+            <div style="font-size:11px;color:#8C8377;margin-bottom:14px;">Fonte: CD Sul — Curitiba · 87% de similaridade</div>
+            <sc-if value="{{aiNoDecision}}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;gap:6px;">
+                <button style="flex:1;padding:10px;border-radius:8px;font-weight:600;font-size:12.5px;background:#3F7D52;color:#fff;" onclick="{{aceitarAI}}">Aceitar</button>
+                <button style="flex:1;padding:10px;border-radius:8px;font-weight:600;font-size:12.5px;background:#fff;border:1px solid #E3DCD0;color:#24211F;" onclick="{{adaptarAI}}">Adaptar</button>
+                <button style="flex:1;padding:10px;border-radius:8px;font-weight:600;font-size:12.5px;background:#fff;border:1px solid #E7B9B5;color:#B23B34;" onclick="{{recusarAI}}">Recusar</button>
+              </div>
+            </sc-if>
+            <sc-if value="{{aiHasDecision}}" hint-placeholder-val="{{ false }}">
+              <div style="font-size:12.5px;font-weight:700;color:{{aiDecisionColor}};">{{aiDecisionLabel}}</div>
+            </sc-if>
+          </div>
+        </div>
+        <div style="padding:16px 20px 22px 20px;">
+          <button class="btn-primary" onclick="{{continueClick}}">Continuar checklist</button>
+        </div>
+      </sc-if>
+
+      <!-- RESUMO -->
+      <sc-if value="{{isResumo}}" hint-placeholder-val="{{ false }}">
+        <div style="padding:22px 20px 14px 20px;display:flex;align-items:center;gap:12px;">
+          <div onclick="{{backToSecoes}}" style="cursor:pointer;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#24211F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"></path></svg>
+          </div>
+          <h3 style="font-size:16px;font-weight:600;">Resumo da auditoria</h3>
+        </div>
+        <div style="flex:1;overflow:auto;padding:6px 20px;display:flex;flex-direction:column;gap:14px;">
+          <div class="card" style="padding:20px;text-align:center;">
+            <div style="font-size:11px;color:#8C8377;font-weight:600;margin-bottom:6px;">NOTA CALCULADA AUTOMATICAMENTE</div>
+            <div style="font-family:'Space Grotesk';font-size:38px;font-weight:600;color:#24211F;">84%</div>
+            <span style="font-size:11.5px;font-weight:700;color:#8C6726;border:1px solid #D9A94C;border-radius:20px;padding:4px 12px;">Aprovado com ressalvas</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;padding:12px 14px;background:#E7F2EA;border-radius:10px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3F7D52" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M8.5 12.5l2.2 2.2 4.8-5"></path></svg>
+            <span style="font-size:12.5px;color:#356A46;font-weight:600;">Nenhuma pendência obrigatória</span>
+          </div>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:#8C8377;margin-bottom:8px;">NÃO CONFORMIDADES ({{ncCount}})</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <sc-for list="{{ncSummaryList}}" as="n" hint-placeholder-count="1">
+                <div class="card" style="padding:12px 14px;">
+                  <div style="font-size:13px;color:#24211F;font-weight:600;margin-bottom:4px;">{{n.text}}</div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <span style="font-size:11px;color:#8C8377;">{{n.secao}}</span>
+                    <span style="font-size:10.5px;font-weight:700;color:{{n.color}};background:{{n.bg}};border-radius:6px;padding:2px 8px;">{{n.label}}</span>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+        <div style="padding:16px 20px 22px 20px;">
+          <button class="btn-primary" onclick="{{signClick}}">Assinar e encerrar</button>
+        </div>
+      </sc-if>
+
+      <!-- ENCERRADA -->
+      <sc-if value="{{isEncerrada}}" hint-placeholder-val="{{ false }}">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center;">
+          <div style="width:64px;height:64px;border-radius:50%;background:#E7F2EA;display:flex;align-items:center;justify-content:center;margin-bottom:18px;">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#3F7D52" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M8 12.5l2.5 2.5 5.5-6"></path></svg>
+          </div>
+          <h2 style="font-size:19px;font-weight:600;margin-bottom:8px;">Auditoria encerrada</h2>
+          <div style="font-size:14px;color:#6B6259;margin-bottom:4px;">Nota final: <strong style="color:#24211F;">84%</strong> · Aprovado com ressalvas</div>
+          <div style="font-size:12.5px;color:#8C8377;line-height:1.6;margin:12px 0 26px 0;">Este registro agora é imutável. O relatório foi encaminhado para aprovação por alçada.</div>
+          <button class="btn-primary" onclick="{{voltarClick}}">Voltar à lista</button>
+        </div>
+      </sc-if>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{}'>
+const SECTIONS = [
+  { id:'db', name:'Dados Básicos', questions:[
+      { id:'db1', tipo:'numero', text:'Quantos metros quadrados tem o galpão?', unidade:'m²' },
+      { id:'db2', tipo:'numero', text:'Quantos caminhões o distribuidor possui?', unidade:'veículos' },
+  ]},
+  { id:'rec', name:'Recebimento', questions:[
+      { id:'rec1', tipo:'simnao', text:'O cais de recebimento está limpo e organizado?' },
+      { id:'rec2', tipo:'numero', text:'Temperatura da câmara fria do chope', unidade:'°C', faixaMin:2, faixaMax:8 },
+      { id:'rec3', tipo:'foto', text:'Registre foto da área de recebimento' },
+  ]},
+  { id:'arm', name:'Armazenamento', questions:[
+      { id:'arm1', tipo:'simnao', text:'Empilhadeiras com certificação de manutenção em dia?' },
+      { id:'arm2', tipo:'simnao', text:'Lastro de vasilhame conforme padrão?' },
+  ]},
+  { id:'exp', name:'Expedição', questions:[
+      { id:'exp1', tipo:'simnao', text:'Bipagem de barris de chope realizada corretamente?' },
+  ]},
+  { id:'ger', name:'Gerenciamento Operacional', questions:[
+      { id:'ger1', tipo:'texto', text:'Descreva eventuais ocorrências do período' },
+  ]},
+];
+const TOTAL_Q = SECTIONS.reduce((n, s) => n + s.questions.length, 0);
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      screen: 'lista',
+      listFilter: 'todas',
+      currentUnidade: '',
+      currentSectionIdx: 0,
+      currentQuestionIdx: 0,
+      answers: {},
+      evidenceCount: {},
+      ncDraft: null,
+      ncList: [],
+      aiDecision: null,
+    };
+  }
+
+  setFilterTodas = () => this.setState({ listFilter: 'todas' });
+  setFilterAtrasadas = () => this.setState({ listFilter: 'atrasadas' });
+
+  openAudit = (unidade) => this.setState({ screen: 'secoes', currentUnidade: unidade });
+  backToLista = () => this.setState({ screen: 'lista', currentSectionIdx: 0, currentQuestionIdx: 0, answers: {}, evidenceCount: {}, ncDraft: null, ncList: [], aiDecision: null });
+  backToSecoes = () => this.setState({ screen: 'secoes' });
+
+  openSection = (idx) => {
+    const sec = SECTIONS[idx];
+    let qi = sec.questions.findIndex(q => !(q.id in this.state.answers));
+    if (qi === -1) qi = 0;
+    this.setState({ screen: 'pergunta', currentSectionIdx: idx, currentQuestionIdx: qi });
+  };
+
+  goNext = () => {
+    const sec = SECTIONS[this.state.currentSectionIdx];
+    if (this.state.currentQuestionIdx < sec.questions.length - 1) {
+      this.setState({ currentQuestionIdx: this.state.currentQuestionIdx + 1 });
+    } else {
+      this.setState({ screen: 'secoes' });
+    }
+  };
+  goPrev = () => {
+    if (this.state.currentQuestionIdx > 0) this.setState({ currentQuestionIdx: this.state.currentQuestionIdx - 1 });
+    else this.setState({ screen: 'secoes' });
+  };
+
+  answerSimNao = (qid, value) => {
+    if (value === 'nao') {
+      this.setState({ answers: { ...this.state.answers, [qid]: value }, ncDraft: { qid, severity: null } });
+    } else {
+      this.setState({ answers: { ...this.state.answers, [qid]: value } });
+      this.goNext();
+    }
+  };
+  setSeverity = (sev) => this.setState({ ncDraft: { ...this.state.ncDraft, severity: sev } });
+  confirmNC = () => {
+    const draft = this.state.ncDraft;
+    const sec = SECTIONS[this.state.currentSectionIdx];
+    const q = sec.questions.find(qq => qq.id === draft.qid);
+    const novaNC = { id: 'nc' + (this.state.ncList.length + 1), qid: q.id, text: q.text, severity: draft.severity, secao: sec.name };
+    this.setState({ ncList: [...this.state.ncList, novaNC], ncDraft: null, aiDecision: null, screen: 'ncSugestao' });
+  };
+  decideAI = (d) => this.setState({ aiDecision: d });
+  continueAfterNC = () => {
+    const sec = SECTIONS[this.state.currentSectionIdx];
+    const isLast = this.state.currentQuestionIdx >= sec.questions.length - 1;
+    this.setState({
+      screen: isLast ? 'secoes' : 'pergunta',
+      currentQuestionIdx: isLast ? this.state.currentQuestionIdx : this.state.currentQuestionIdx + 1,
+    });
+  };
+
+  setNumero = (qid, e) => this.setState({ answers: { ...this.state.answers, [qid]: e.target.value } });
+  setTexto = (qid, e) => this.setState({ answers: { ...this.state.answers, [qid]: e.target.value } });
+  addEvidence = (qid) => this.setState({ evidenceCount: { ...this.state.evidenceCount, [qid]: (this.state.evidenceCount[qid] || 0) + 1 } });
+
+  goResumo = () => this.setState({ screen: 'resumo' });
+  signClose = () => this.setState({ screen: 'encerrada' });
+
+  renderVals() {
+    const s = this.state;
+
+    const auditsRaw = [
+      { id: 'a1', unidade: 'Distribuidor Vale Norte', tipo: 'Auditoria de Distribuidor', data: 'Hoje · 09:00', status: 'agendada' },
+      { id: 'a2', unidade: 'CD Sul — Curitiba', tipo: 'Auditoria de Distribuidor', data: 'Hoje · 14:00', status: 'atrasada' },
+      { id: 'a3', unidade: 'Fábrica Matriz — Linha 2', tipo: 'Auditoria 5S', data: 'Amanhã · 08:30', status: 'agendada' },
+    ];
+    const filtered = s.listFilter === 'atrasadas' ? auditsRaw.filter(a => a.status === 'atrasada') : auditsRaw;
+    const auditsList = filtered.map(a => ({
+      ...a,
+      statusLabel: a.status === 'atrasada' ? 'Atrasada' : 'Agendada',
+      statusColor: a.status === 'atrasada' ? '#B23B34' : '#8C6726',
+      statusBg: a.status === 'atrasada' ? '#FBEAE8' : '#FBF6EB',
+      onClick: () => this.openAudit(a.unidade),
+    }));
+
+    const answeredCount = Object.keys(s.answers).length;
+    const overallPct = Math.round((answeredCount / TOTAL_Q) * 100);
+    const sectionsProgress = SECTIONS.map((sec, idx) => {
+      const answered = sec.questions.filter(q => q.id in s.answers).length;
+      const total = sec.questions.length;
+      return {
+        name: sec.name, answered, total,
+        dotColor: answered === total ? '#3F7D52' : (answered > 0 ? '#B38335' : '#D9CFC0'),
+        onClick: () => this.openSection(idx),
+      };
+    });
+
+    const currentSection = SECTIONS[s.currentSectionIdx];
+    const currentQ = currentSection.questions[s.currentQuestionIdx];
+    const answerVal = s.answers[currentQ.id];
+    const showNcForm = !!(s.ncDraft && s.ncDraft.qid === currentQ.id);
+    const showNcConfirmed = answerVal === 'nao' && !showNcForm;
+    const confirmedNC = s.ncList.find(n => n.qid === currentQ.id);
+    const sevLabelMap = { critica: 'Crítica', maior: 'Maior', menor: 'Menor' };
+
+    const sevStyle = (key) => 'flex:1;' + ((s.ncDraft && s.ncDraft.severity === key)
+      ? (key === 'critica' ? 'background:#B23B34;border-color:#B23B34;color:#fff;' : key === 'maior' ? 'background:#C08A2E;border-color:#C08A2E;color:#fff;' : 'background:#453F39;border-color:#453F39;color:#fff;')
+      : 'background:#fff;color:#453F39;');
+
+    return {
+      isLista: s.screen === 'lista', isSecoes: s.screen === 'secoes', isPergunta: s.screen === 'pergunta',
+      isNcSugestao: s.screen === 'ncSugestao', isResumo: s.screen === 'resumo', isEncerrada: s.screen === 'encerrada',
+
+      filterTodasClass: s.listFilter === 'todas' ? 'active' : '', filterAtrasadasClass: s.listFilter === 'atrasadas' ? 'active' : '',
+      setFilterTodas: this.setFilterTodas, setFilterAtrasadas: this.setFilterAtrasadas,
+      auditsList,
+
+      currentUnidade: s.currentUnidade, backToLista: this.backToLista,
+      overallPct, answeredCount, totalCount: TOTAL_Q, sectionsProgress,
+      allDone: answeredCount === TOTAL_Q, notAllDone: answeredCount !== TOTAL_Q, goResumo: this.goResumo,
+
+      sectionName: currentSection.name, backToSecoes: this.backToSecoes,
+      sectionPct: Math.round(((s.currentQuestionIdx + 1) / currentSection.questions.length) * 100),
+      qIndexLabel: s.currentQuestionIdx + 1, qTotalLabel: currentSection.questions.length,
+      questionText: currentQ.text,
+
+      isSimNao: currentQ.tipo === 'simnao', isNumero: currentQ.tipo === 'numero', isFoto: currentQ.tipo === 'foto', isTexto: currentQ.tipo === 'texto',
+
+      pillSimClass: answerVal === 'sim' ? 'active-sim' : '', pillNaoClass: answerVal === 'nao' ? 'active-nao' : '', pillNaClass: answerVal === 'na' ? 'active-na' : '',
+      pickSim: () => this.answerSimNao(currentQ.id, 'sim'), pickNao: () => this.answerSimNao(currentQ.id, 'nao'), pickNa: () => this.answerSimNao(currentQ.id, 'na'),
+
+      showNcForm, showNcConfirmed,
+      confirmedSeverity: confirmedNC ? sevLabelMap[confirmedNC.severity] : '',
+      sevCriticaStyle: sevStyle('critica'), sevMaiorStyle: sevStyle('maior'), sevMenorStyle: sevStyle('menor'),
+      pickCritica: () => this.setSeverity('critica'), pickMaior: () => this.setSeverity('maior'), pickMenor: () => this.setSeverity('menor'),
+      confirmNcClass: (s.ncDraft && s.ncDraft.severity) ? 'btn-primary' : 'btn-disabled',
+      confirmNcClick: (s.ncDraft && s.ncDraft.severity) ? this.confirmNC : (() => {}),
+
+      numeroValue: answerVal || '', unidadeLabel: currentQ.unidade || '', hasFaixa: !!currentQ.faixaMin,
+      faixaLabel: currentQ.faixaMin ? currentQ.faixaMin + '°C a ' + currentQ.faixaMax + '°C' : '',
+      setNumero: (e) => this.setNumero(currentQ.id, e),
+
+      textoValue: answerVal || '', setTexto: (e) => this.setTexto(currentQ.id, e),
+
+      evidenceThumbs: Array.from({ length: s.evidenceCount[currentQ.id] || 0 }, (_, i) => ({ key: i })),
+      addEvidenceClick: () => this.addEvidence(currentQ.id),
+
+      nextBtnClass: showNcForm ? 'btn-disabled' : 'btn-primary',
+      goNextClick: showNcForm ? (() => {}) : this.goNext,
+      goPrev: this.goPrev,
+
+      ncSectionName: s.ncList.length ? s.ncList[s.ncList.length - 1].secao : '',
+      ncQuestionText: s.ncList.length ? s.ncList[s.ncList.length - 1].text : '',
+      ncSeverityLabel: s.ncList.length ? sevLabelMap[s.ncList[s.ncList.length - 1].severity] : '',
+      ncSeverityColor: s.ncList.length && s.ncList[s.ncList.length - 1].severity === 'critica' ? '#B23B34' : (s.ncList.length && s.ncList[s.ncList.length - 1].severity === 'maior' ? '#C08A2E' : '#453F39'),
+      ncSeverityBg: s.ncList.length && s.ncList[s.ncList.length - 1].severity === 'critica' ? '#FBEAE8' : (s.ncList.length && s.ncList[s.ncList.length - 1].severity === 'maior' ? '#FBF1E1' : '#EFEAE1'),
+      aiNoDecision: !s.aiDecision, aiHasDecision: !!s.aiDecision,
+      aiDecisionLabel: s.aiDecision === 'aceita' ? '✓ Sugestão aceita e incorporada ao plano de ação' : (s.aiDecision === 'adaptada' ? '✓ Sugestão adaptada e incorporada ao plano de ação' : (s.aiDecision === 'recusada' ? '✕ Sugestão recusada — registrada em log' : '')),
+      aiDecisionColor: s.aiDecision === 'recusada' ? '#B23B34' : '#3F7D52',
+      aceitarAI: () => this.decideAI('aceita'), adaptarAI: () => this.decideAI('adaptada'), recusarAI: () => this.decideAI('recusada'),
+      continueClick: this.continueAfterNC,
+
+      ncCount: s.ncList.length,
+      ncSummaryList: s.ncList.map(n => ({
+        text: n.text, secao: n.secao,
+        label: sevLabelMap[n.severity],
+        color: n.severity === 'critica' ? '#B23B34' : (n.severity === 'maior' ? '#C08A2E' : '#453F39'),
+        bg: n.severity === 'critica' ? '#FBEAE8' : (n.severity === 'maior' ? '#FBF1E1' : '#EFEAE1'),
+      })),
+      signClick: this.signClose,
+      voltarClick: this.backToLista,
+    };
+  }
+}
+</script>
+</body>
+</html>

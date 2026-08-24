@@ -1,0 +1,785 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin:0; padding:0; }
+  body { font-family:'Public Sans', system-ui, -apple-system, sans-serif; color:#24211F; background:#EEEAE2; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,h4 { margin:0; font-family:'Space Grotesk','Public Sans',sans-serif; }
+  button { font-family:inherit; border:none; background:none; cursor:pointer; }
+  input, textarea { font-family:inherit; }
+  a { color:#B38335; text-decoration:none; }
+  a:hover { color:#8C6726; }
+  ::-webkit-scrollbar { width:8px; height:8px; }
+  ::-webkit-scrollbar-thumb { background:#E3DCD0; border-radius:4px; }
+  .btn-primary { background:#24211F; color:#fff; padding:10px 18px; border-radius:10px; font-weight:600; font-size:14px; cursor:pointer; }
+  .btn-primary:hover { background:#3A342C; }
+  .btn-ghost { background:#fff; color:#24211F; padding:10px 18px; border-radius:10px; font-weight:600; font-size:14px; border:1px solid #E7E1D5; cursor:pointer; }
+  .btn-ghost:hover { background:#F7F4EE; }
+  .btn-sm-green { background:#3F7D52; color:#fff; padding:7px 14px; border-radius:8px; font-weight:600; font-size:12.5px; cursor:pointer; }
+  .btn-sm-green:hover { background:#356A46; }
+  .btn-sm-red { background:transparent; color:#B23B34; padding:7px 14px; border-radius:8px; font-weight:600; font-size:12.5px; border:1px solid #EAD0CD; cursor:pointer; }
+  .btn-sm-red:hover { background:#FBEAE8; }
+  .btn-sm-ghost { background:#fff; color:#24211F; padding:7px 14px; border-radius:8px; font-weight:600; font-size:12.5px; border:1px solid #E7E1D5; cursor:pointer; }
+  .btn-sm-ghost:hover { background:#F7F4EE; }
+  .card { background:#fff; border:1px solid #EFEAE0; border-radius:20px; box-shadow:0 1px 2px rgba(36,33,31,0.02), 0 10px 28px rgba(36,33,31,0.045); }
+  .chip { padding:7px 15px; border-radius:20px; font-size:13px; font-weight:600; cursor:pointer; border:1px solid #E7E1D5; color:#8C8377; background:#fff; }
+  .chip.active { background:#24211F; color:#fff; border-color:#24211F; }
+  .row-hover:hover { background:#FAF8F3; }
+  .nav-row:hover { background:#3A342C; }
+  .textfield { border:1px solid #E7E1D5; border-radius:8px; padding:6px 10px; font-size:13px; color:#24211F; }
+  .textfield:focus { outline:2px solid #D9A94C; border-color:#B38335; }
+  .tabular { font-variant-numeric: tabular-nums; }
+  .icon-toggle { width:34px;height:34px;border-radius:9px;border:1px solid #E7E1D5;display:flex;align-items:center;justify-content:center;color:#8C8377; }
+</style>
+</helmet>
+
+<div style="width:1440px;min-height:1060px;background:#EEEAE2;display:flex;font-size:14px;">
+
+  <!-- SIDEBAR -->
+  <div style="width:248px;flex-shrink:0;background:#24211F;min-height:1060px;display:flex;flex-direction:column;padding:22px 0;">
+    <div style="display:flex;align-items:center;gap:10px;padding:0 20px 22px 20px;">
+      <div style="width:34px;height:34px;border-radius:9px;background:#B38335;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#24211F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l3 4-7.5 14L3 7z"></path><path d="M3 7h15"></path><path d="M9.5 3l1 4-2.5 14"></path><path d="M14.5 3l-1 4 2.5 14"></path></svg>
+      </div>
+      <div style="line-height:1.25;">
+        <div style="color:#FAF8F5;font-family:'Space Grotesk';font-weight:600;font-size:14.5px;">Cidade Imperial</div>
+        <div style="color:#B8AFA3;font-size:11.5px;">Plataforma de Auditorias</div>
+      </div>
+    </div>
+
+    <div style="height:1px;background:#3A342C;margin:0 20px 14px 20px;"></div>
+
+    <div style="{{dashStyle}}" onclick="{{goDashboard}}">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></svg>
+      <span>Dashboard</span>
+    </div>
+    <div style="{{calStyle}}" onclick="{{goCalendario}}">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 9h18"></path><path d="M8 3v4"></path><path d="M16 3v4"></path></svg>
+      <span>Calendário</span>
+    </div>
+    <div style="{{chkStyle}}" onclick="{{goChecklist}}">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"></rect><path d="M9 4V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1"></path><path d="M9 12l2 2 4-4"></path></svg>
+      <span>Modelos &amp; Checklists</span>
+    </div>
+    <div style="{{aprStyle}}" onclick="{{goAprovacoes}}">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M8.5 12.5l2.2 2.2 4.8-5"></path></svg>
+      <span>Aprovações</span>
+      <sc-if value="{{hasPending}}" hint-placeholder-val="{{ true }}">
+        <span style="margin-left:auto;background:#B23B34;color:#fff;font-size:11px;font-weight:700;border-radius:10px;padding:1px 7px;">{{pendingCount}}</span>
+      </sc-if>
+    </div>
+    <div style="{{bpStyle}}" onclick="{{goBoasPraticas}}">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"></path><path d="M10 21h4"></path><path d="M12 3a6 6 0 0 0-3.5 10.9c.5.4.8 1 .8 1.6v.5h5.4v-.5c0-.6.3-1.2.8-1.6A6 6 0 0 0 12 3z"></path></svg>
+      <span>Banco de Boas Práticas</span>
+    </div>
+
+    <div style="margin-top:auto;padding:16px 20px 0 20px;">
+      <div style="height:1px;background:#3A342C;margin-bottom:14px;"></div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:30px;height:30px;border-radius:50%;background:#453F39;color:#E4C989;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;">AM</div>
+        <div style="line-height:1.25;">
+          <div style="color:#FAF8F5;font-size:12.5px;font-weight:600;">Ana Martins</div>
+          <div style="color:#8C8377;font-size:11px;">Gestora · Logística</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;">
+
+    <!-- TOPBAR -->
+    <div style="height:76px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:0 28px;">
+      <div style="display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #EFEAE0;border-radius:999px;padding:11px 18px;width:320px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8C8377" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg>
+        <span style="color:#A79E92;font-size:13px;">Buscar unidade, auditoria…</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:40px;height:40px;border-radius:999px;background:#fff;border:1px solid #EFEAE0;display:flex;align-items:center;justify-content:center;position:relative;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#453F39" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 3-1 4.5-1.5 5.5A1 1 0 0 0 5.4 15h13.2a1 1 0 0 0 .9-1.5C19 12.5 18 11 18 8z"></path><path d="M9.5 18a2.5 2.5 0 0 0 5 0"></path></svg>
+          <div style="position:absolute;top:9px;right:10px;width:6px;height:6px;border-radius:50%;background:#B23B34;"></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #EFEAE0;border-radius:999px;padding:6px 16px 6px 6px;">
+          <div style="width:30px;height:30px;border-radius:50%;background:#24211F;color:#E4C989;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;">AM</div>
+          <div style="line-height:1.2;">
+            <div style="font-size:12.5px;font-weight:600;color:#24211F;">Ana Martins</div>
+            <div style="font-size:10.5px;color:#A79E92;">Gestora</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div style="flex:1;padding:4px 28px 28px 28px;overflow:auto;">
+      <div style="margin-bottom:20px;">
+        <h2 style="font-size:21px;font-weight:600;color:#24211F;">{{pageTitle}}</h2>
+        <div style="font-size:12.5px;color:#A79E92;margin-top:3px;">{{pageSubtitle}}</div>
+      </div>
+
+      <!-- DASHBOARD -->
+      <sc-if value="{{isDashboard}}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;gap:10px;margin-bottom:18px;">
+          <sc-for list="{{periodChips}}" as="p" hint-placeholder-count="4">
+            <div class="chip {{p.activeClass}}" onclick="{{p.onClick}}">{{p.label}}</div>
+          </sc-for>
+        </div>
+
+        <!-- HERO -->
+        <div class="card" style="padding:24px;margin-bottom:16px;display:grid;grid-template-columns:1fr 1px 220px;gap:26px;">
+          <div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+              <h3 style="font-size:15px;font-weight:600;color:#24211F;">Evolução da conformidade</h3>
+              <div style="display:flex;gap:8px;">
+                <div class="icon-toggle"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="12" width="4" height="8" rx="1"></rect><rect x="10" y="7" width="4" height="13" rx="1"></rect><rect x="16" y="3" width="4" height="17" rx="1"></rect></svg></div>
+                <div class="icon-toggle" style="background:#24211F;color:#fff;border-color:#24211F;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16l5-6 4 3 7-9"></path></svg></div>
+              </div>
+            </div>
+            <div style="position:relative;width:460px;">
+              <svg width="460" height="200" viewBox="0 0 460 200">
+                <line x1="0" y1="20" x2="460" y2="20" stroke="#F3EFE7" stroke-width="1"></line>
+                <line x1="0" y1="94" x2="460" y2="94" stroke="#F3EFE7" stroke-width="1"></line>
+                <line x1="0" y1="168" x2="460" y2="168" stroke="#EAE4D8" stroke-width="1"></line>
+                <sc-for list="{{chartBars}}" as="b" hint-placeholder-count="6">
+                  <rect x="{{b.x}}" y="{{b.y}}" width="{{b.w}}" height="{{b.h}}" rx="7" fill="{{b.fill}}"></rect>
+                  <text x="{{b.labelX}}" y="188" font-size="11.5" fill="{{b.labelColor}}" font-weight="{{b.labelWeight}}" text-anchor="middle">{{b.month}}</text>
+                </sc-for>
+              </svg>
+              <div style="position:absolute;left:250px;top:8px;width:180px;background:#fff;border-radius:14px;box-shadow:0 4px 10px rgba(36,33,31,0.06), 0 14px 30px rgba(36,33,31,0.10);padding:14px 16px;border:1px solid #F0ECE3;">
+                <div style="font-size:11.5px;color:#8C8377;margin-bottom:8px;">Agosto de 2026</div>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+                  <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#453F39;"><span style="width:7px;height:7px;border-radius:2px;background:#B38335;"></span>Conformidade</div>
+                  <span class="tabular" style="font-size:12px;font-weight:700;">87%</span>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;">
+                  <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#453F39;"><span style="width:7px;height:7px;border-radius:2px;background:#B23B34;"></span>NCs abertas</div>
+                  <span class="tabular" style="font-size:12px;font-weight:700;">23</span>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;">
+                  <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:#453F39;"><span style="width:7px;height:7px;border-radius:2px;background:#C08A2E;"></span>Ações vencidas</div>
+                  <span class="tabular" style="font-size:12px;font-weight:700;">6</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="background:#F0ECE3;"></div>
+
+          <div style="display:flex;flex-direction:column;justify-content:space-between;padding:4px 0;">
+            <div>
+              <div style="font-size:12px;color:#8C8377;margin-bottom:6px;">Conformidade média</div>
+              <div class="tabular" style="font-family:'Space Grotesk';font-size:26px;font-weight:600;color:#24211F;">87%</div>
+              <div style="font-size:12px;font-weight:600;color:#3F7D52;margin-top:4px;">↑ 6 p.p. vs. ciclo anterior</div>
+            </div>
+            <div style="height:1px;background:#F0ECE3;margin:16px 0;"></div>
+            <div>
+              <div style="font-size:12px;color:#8C8377;margin-bottom:6px;">NCs abertas</div>
+              <div class="tabular" style="font-family:'Space Grotesk';font-size:26px;font-weight:600;color:#24211F;">23</div>
+              <div style="font-size:12px;font-weight:600;color:#B23B34;margin-top:4px;">3 críticas · 9 maiores · 11 menores</div>
+            </div>
+            <div style="height:1px;background:#F0ECE3;margin:16px 0;"></div>
+            <div>
+              <div style="font-size:12px;color:#8C8377;margin-bottom:6px;">Ações vencidas</div>
+              <div class="tabular" style="font-family:'Space Grotesk';font-size:26px;font-weight:600;color:#24211F;">6</div>
+              <div style="font-size:12px;font-weight:600;color:#C08A2E;margin-top:4px;">escalonadas automaticamente</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ROW 2 -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px;">
+          <div class="card" style="padding:22px;">
+            <div style="font-size:14px;font-weight:600;color:#24211F;margin-bottom:2px;">Auditorias × planejadas</div>
+            <div style="font-size:12px;color:#8C8377;margin-bottom:16px;">Ciclo atual</div>
+            <div class="tabular" style="font-family:'Space Grotesk';font-size:25px;font-weight:600;color:#24211F;margin-bottom:14px;">42/48</div>
+            <div style="height:14px;border-radius:8px;background:#F0ECE3;overflow:hidden;margin-bottom:8px;">
+              <div style="height:100%;width:88%;background:#3F7D52;border-radius:8px;"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;color:#8C8377;">
+              <span>42 realizadas</span><span>48 planejadas</span>
+            </div>
+          </div>
+
+          <div class="card" style="padding:22px;">
+            <div style="font-size:14px;font-weight:600;color:#24211F;margin-bottom:2px;">NCs por severidade</div>
+            <div style="font-size:12px;color:#8C8377;margin-bottom:16px;">Todas as unidades</div>
+            <div class="tabular" style="font-family:'Space Grotesk';font-size:25px;font-weight:600;color:#24211F;margin-bottom:14px;">23 abertas</div>
+            <div style="display:flex;height:14px;border-radius:8px;overflow:hidden;margin-bottom:12px;">
+              <div style="width:13%;background:#B23B34;"></div>
+              <div style="width:39%;background:#C08A2E;"></div>
+              <div style="width:48%;background:#453F39;"></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:7px;">
+              <sc-for list="{{severityLegend}}" as="l" hint-placeholder-count="3">
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div style="width:9px;height:9px;border-radius:3px;background:{{l.color}};flex-shrink:0;"></div>
+                  <div style="font-size:12.5px;color:#453F39;flex:1;">{{l.label}}</div>
+                  <div class="tabular" style="font-size:12.5px;font-weight:700;color:#24211F;">{{l.count}}</div>
+                  <div style="font-size:11px;color:#8C8377;width:30px;text-align:right;">{{l.pct}}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div class="card" style="padding:22px;text-align:center;">
+            <div style="font-size:14px;font-weight:600;color:#24211F;margin-bottom:2px;">Meta de conformidade</div>
+            <div style="font-size:12px;color:#8C8377;margin-bottom:8px;">Ciclo atual vs. meta de 90%</div>
+            <svg width="130" height="72" viewBox="0 0 120 68" style="margin:6px auto 0 auto;display:block;">
+              <sc-for list="{{gaugeSegments}}" as="g" hint-placeholder-count="14">
+                <path d="{{g.d}}" stroke="{{g.color}}" stroke-width="9" fill="none" stroke-linecap="round"></path>
+              </sc-for>
+            </svg>
+            <div class="tabular" style="font-family:'Space Grotesk';font-size:26px;font-weight:600;color:#24211F;margin-top:2px;">87%</div>
+            <div style="font-size:11.5px;color:#8C8377;margin-top:2px;">da meta atingida neste ciclo</div>
+          </div>
+        </div>
+
+        <!-- RANKING -->
+        <div class="card" style="padding:22px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+            <h3 style="font-size:15px;font-weight:600;">Ranking de unidades</h3>
+            <span style="font-size:12.5px;color:#A79E92;">Últimos 6 ciclos</span>
+          </div>
+          <sc-for list="{{ranking}}" as="r" hint-placeholder-count="5">
+            <div style="display:flex;align-items:center;gap:14px;padding:13px 0;border-bottom:1px solid #F3EFE7;">
+              <div style="width:36px;height:36px;border-radius:9px;background:{{r.avatarColor}};color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;">{{r.initials}}</div>
+              <div style="flex:1;">
+                <div style="font-size:13.5px;font-weight:600;color:#24211F;">{{r.unidade}}</div>
+                <div style="font-size:12px;color:#8C8377;margin-top:1px;">{{r.processo}}</div>
+              </div>
+              <div style="text-align:right;">
+                <div class="tabular" style="font-size:14.5px;font-weight:700;color:{{r.notaColor}};">{{r.nota}}</div>
+                <div style="font-size:11.5px;font-weight:600;color:{{r.trendColor}};margin-top:2px;">{{r.trendLabel}}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <!-- CALENDARIO -->
+      <sc-if value="{{isCalendario}}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:16px;">
+          <div class="card" style="padding:22px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+              <h3 style="font-size:15px;font-weight:600;">Agosto 2026</h3>
+              <div style="display:flex;gap:8px;">
+                <button class="btn-ghost" style="padding:6px 14px;font-size:12.5px;border-radius:8px;">Mês</button>
+                <button class="btn-ghost" style="padding:6px 14px;font-size:12.5px;border-radius:8px;">Lista</button>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin-bottom:6px;">
+              <div style="font-size:11.5px;color:#A79E92;text-align:center;font-weight:600;">DOM</div>
+              <div style="font-size:11.5px;color:#A79E92;text-align:center;font-weight:600;">SEG</div>
+              <div style="font-size:11.5px;color:#A79E92;text-align:center;font-weight:600;">TER</div>
+              <div style="font-size:11.5px;color:#A79E92;text-align:center;font-weight:600;">QUA</div>
+              <div style="font-size:11.5px;color:#A79E92;text-align:center;font-weight:600;">QUI</div>
+              <div style="font-size:11.5px;color:#A79E92;text-align:center;font-weight:600;">SEX</div>
+              <div style="font-size:11.5px;color:#A79E92;text-align:center;font-weight:600;">SÁB</div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;">
+              <sc-for list="{{calendarDays}}" as="d" hint-placeholder-count="42">
+                <div style="{{d.cellStyle}}" onclick="{{d.pick}}">
+                  <span style="{{d.numStyle}}">{{d.num}}</span>
+                  <sc-if value="{{d.hasEvent}}" hint-placeholder-val="{{ false }}">
+                    <div style="{{d.pillStyle}}">{{d.pillLabel}}</div>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div class="card" style="padding:22px;">
+            <h3 style="font-size:14.5px;font-weight:600;margin-bottom:4px;">Próximas auditorias</h3>
+            <div style="font-size:12px;color:#8C8377;margin-bottom:14px;">5 programadas nesta semana</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <sc-for list="{{eventList}}" as="e" hint-placeholder-count="5">
+                <div style="{{e.rowStyle}}" onclick="{{e.pick}}">
+                  <div style="width:8px;height:8px;border-radius:50%;background:{{e.dotColor}};flex-shrink:0;margin-top:5px;"></div>
+                  <div style="flex:1;">
+                    <div style="font-size:13px;font-weight:600;color:#24211F;">{{e.unidade}}</div>
+                    <div style="font-size:11.5px;color:#8C8377;">{{e.tipo}} · 08/{{e.day}}</div>
+                  </div>
+                  <div style="font-size:11px;font-weight:700;color:{{e.dotColor}};white-space:nowrap;">{{e.statusLabel}}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- CHECKLIST -->
+      <sc-if value="{{isChecklist}}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px;">
+          <div>
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+              <h3 style="font-size:17px;font-weight:600;">Roteiro de Auditoria de Distribuidores</h3>
+              <span style="border:1px solid #D9A94C;color:#8C6726;font-size:11.5px;font-weight:700;border-radius:20px;padding:3px 10px;">Rascunho v1.3</span>
+            </div>
+            <div style="font-size:12.5px;color:#8C8377;">Aplicável a: Auditoria de Distribuidor · Logística</div>
+          </div>
+          <div style="display:flex;gap:10px;">
+            <button class="btn-ghost">Pré-visualizar</button>
+            <button class="btn-primary">Publicar versão</button>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:280px 1fr;gap:16px;">
+          <div class="card" style="padding:10px;">
+            <sc-for list="{{sectionsList}}" as="s" hint-placeholder-count="5">
+              <div class="row-hover" style="{{s.style}}" onclick="{{s.onClick}}">
+                <div style="width:6px;height:6px;border-radius:50%;background:#3F7D52;flex-shrink:0;"></div>
+                <span style="flex:1;font-size:13.5px;">{{s.name}}</span>
+                <span style="font-size:11.5px;color:#8C8377;">{{s.count}}</span>
+              </div>
+            </sc-for>
+          </div>
+
+          <div class="card" style="padding:18px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+              <h4 style="font-size:14px;font-weight:600;">{{currentSectionName}}</h4>
+              <button class="btn-sm-ghost" onclick="{{addQuestionClick}}">+ Adicionar pergunta</button>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 150px 70px 100px 70px;gap:0;font-size:11px;font-weight:700;color:#A79E92;padding:0 10px 8px 10px;border-bottom:1px solid #EFEAE0;">
+              <div>PERGUNTA</div><div>TIPO</div><div>PESO</div><div>OBRIGATÓRIA</div><div>CRÍTICA</div>
+            </div>
+            <sc-for list="{{questionsList}}" as="q" hint-placeholder-count="3">
+              <div class="row-hover" style="display:grid;grid-template-columns:1fr 150px 70px 100px 70px;gap:0;align-items:center;padding:10px;border-bottom:1px solid #F5F1E9;">
+                <div style="font-size:13px;color:#24211F;padding-right:8px;">{{q.text}}</div>
+                <div><span style="font-size:11px;font-weight:600;border-radius:6px;padding:3px 9px;color:{{q.tipoColor}};background:{{q.tipoBg}};">{{q.tipo}}</span></div>
+                <div><input class="textfield" type="number" style="width:50px;" value="{{q.peso}}" onchange="{{q.setPeso}}"></div>
+                <div>
+                  <div style="{{q.obrigSwitchStyle}}" onclick="{{q.toggleObrig}}">
+                    <div style="{{q.obrigKnobStyle}}"></div>
+                  </div>
+                </div>
+                <div style="color:{{q.criticaColor}}">{{q.criticaLabel}}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- APROVACOES -->
+      <sc-if value="{{isAprovacoes}}" hint-placeholder-val="{{ false }}">
+        <div style="margin-bottom:16px;">
+          <div style="font-size:13px;color:#8C8377;">Fila de aprovação por alçada — relatórios encerrados aguardando validação do gestor</div>
+        </div>
+        <div class="card">
+          <div style="display:grid;grid-template-columns:1.6fr 1fr 100px 150px 220px;gap:0;font-size:11px;font-weight:700;color:#A79E92;padding:16px 22px;border-bottom:1px solid #EFEAE0;">
+            <div>UNIDADE</div><div>TIPO</div><div>DATA</div><div>SLA</div><div>AÇÃO</div>
+          </div>
+          <sc-for list="{{reportsList}}" as="r" hint-placeholder-count="4">
+            <div class="row-hover" style="border-bottom:1px solid #F5F1E9;padding:15px 22px;">
+              <div style="display:grid;grid-template-columns:1.6fr 1fr 100px 150px 220px;gap:0;align-items:center;">
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <div style="width:30px;height:30px;border-radius:9px;background:{{r.avatarColor}};color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">{{r.initials}}</div>
+                  <div style="font-size:13.5px;font-weight:600;color:#24211F;">{{r.unidade}}</div>
+                </div>
+                <div style="font-size:12.5px;color:#6B6259;">{{r.tipo}}</div>
+                <div style="font-size:12.5px;color:#6B6259;">{{r.data}}</div>
+                <div style="display:flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:{{r.slaColor}}">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="{{r.slaColor}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg>
+                  {{r.slaLabel}}
+                </div>
+                <sc-if value="{{r.showActions}}" hint-placeholder-val="{{ true }}">
+                  <div style="display:flex;gap:8px;">
+                    <button class="btn-sm-green" onclick="{{r.approveClick}}">Aprovar</button>
+                    <button class="btn-sm-red" onclick="{{r.startReproveClick}}">Reprovar</button>
+                  </div>
+                </sc-if>
+                <sc-if value="{{r.showFinal}}" hint-placeholder-val="{{ false }}">
+                  <span style="font-size:12px;font-weight:700;color:{{r.statusColor}}">{{r.statusLabel}}</span>
+                </sc-if>
+              </div>
+              <sc-if value="{{r.isReproving}}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top:10px;padding-top:10px;border-top:1px dashed #EFEAE0;display:flex;gap:8px;align-items:flex-start;">
+                  <textarea class="textfield" placeholder="Motivo da devolução…" style="flex:1;height:52px;resize:none;" value="{{r.reproveComment}}" onchange="{{r.setReproveComment}}"></textarea>
+                  <div style="display:flex;flex-direction:column;gap:6px;">
+                    <button class="btn-sm-red" onclick="{{r.confirmReproveClick}}">Confirmar devolução</button>
+                    <button class="btn-sm-ghost" onclick="{{r.cancelReproveClick}}">Cancelar</button>
+                  </div>
+                </div>
+              </sc-if>
+              <sc-if value="{{r.showMotivo}}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top:8px;font-size:12px;color:#B23B34;">Motivo: {{r.motivo}}</div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <!-- BOAS PRATICAS -->
+      <sc-if value="{{isBoasPraticas}}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:340px 1fr;gap:16px;">
+          <div class="card" style="padding:14px;">
+            <div style="display:flex;align-items:center;gap:8px;background:#F7F4EE;border-radius:10px;padding:10px 12px;margin-bottom:12px;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#A79E92" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg>
+              <span style="color:#A79E92;font-size:12.5px;">Busca semântica por processo, item, tags…</span>
+            </div>
+            <sc-for list="{{practicesList}}" as="p" hint-placeholder-count="4">
+              <div class="row-hover" style="{{p.style}}" onclick="{{p.onClick}}">
+                <div style="font-size:13px;font-weight:600;color:#24211F;margin-bottom:5px;">{{p.title}}</div>
+                <span style="font-size:11px;font-weight:600;color:#6B6259;background:#F2EEE7;border-radius:6px;padding:2px 7px;margin-right:6px;">{{p.processo}}</span>
+                <div style="display:flex;align-items:center;gap:5px;margin-top:6px;">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#A79E92" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.3"></circle></svg>
+                  <span style="font-size:11px;color:#A79E92;">{{p.origem}}</span>
+                  <span style="font-size:10px;font-weight:700;color:{{p.statusColor}};margin-left:auto;">{{p.statusLabel}}</span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div class="card" style="padding:22px;">
+              <div style="font-size:11px;font-weight:700;color:#A79E92;margin-bottom:6px;">BOA PRÁTICA SELECIONADA</div>
+              <h3 style="font-size:15.5px;font-weight:600;margin-bottom:8px;">{{selectedPractice.title}}</h3>
+              <div style="font-size:13px;color:#6B6259;line-height:1.6;margin-bottom:12px;">{{selectedPractice.description}}</div>
+              <div style="display:flex;gap:18px;font-size:12px;color:#8C8377;">
+                <div>Processo: <strong style="color:#24211F;">{{selectedPractice.processo}}</strong></div>
+                <div>Origem: <strong style="color:#24211F;">{{selectedPractice.origem}}</strong></div>
+              </div>
+            </div>
+
+            <div class="card" style="padding:22px;border-color:#E7D6A8;background:#FBF7ED;">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8C6726" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.6 4.4L18 9l-4.4 1.6L12 15l-1.6-4.4L6 9l4.4-1.6z"></path><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"></path></svg>
+                <span style="font-size:12.5px;font-weight:700;color:#8C6726;">Sugestão gerada por IA</span>
+                <span style="font-size:11.5px;color:#8C6726;margin-left:auto;">87% de similaridade</span>
+              </div>
+              <div style="height:6px;border-radius:4px;background:#F0E4C4;overflow:hidden;margin-bottom:12px;">
+                <div style="height:100%;width:87%;background:#B38335;border-radius:4px;"></div>
+              </div>
+              <div style="font-size:13px;color:#453F39;line-height:1.6;margin-bottom:10px;">
+                NC aberta em <strong>Distribuidor Serra Alta</strong> — item "Temperatura da câmara fria fora da faixa". Recomendação: adotar sensor de temperatura com alarme sonoro, replicando a prática acima.
+              </div>
+              <div style="font-size:11.5px;color:#8C8377;margin-bottom:14px;">Fonte: CD Sul — Curitiba, auditoria de mar/2026 · citação obrigatória por governança de IA</div>
+              <sc-if value="{{noDecision}}" hint-placeholder-val="{{ true }}">
+                <div style="display:flex;gap:8px;">
+                  <button class="btn-sm-green" onclick="{{aceitarClick}}">Aceitar</button>
+                  <button class="btn-sm-ghost" onclick="{{adaptarClick}}">Adaptar</button>
+                  <button class="btn-sm-red" onclick="{{recusarClick}}">Recusar</button>
+                </div>
+              </sc-if>
+              <sc-if value="{{hasDecision}}" hint-placeholder-val="{{ false }}">
+                <div style="font-size:12.5px;font-weight:700;color:{{decisionColor}};">{{decisionLabel}}</div>
+              </sc-if>
+              <div style="font-size:11px;color:#A79E92;margin-top:12px;padding-top:10px;border-top:1px solid #EFE2C4;">Nenhuma ação é criada automaticamente — toda sugestão exige aceite humano e fica registrada em log.</div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      screen: 'dashboard',
+      period: '6c',
+      selectedSectionIdx: 1,
+      questionsBySection: {
+        db: [
+          { id:'db1', text:'Quantos metros quadrados tem o galpão?', tipo:'Numérica', peso:0, obrig:true, critica:false },
+          { id:'db2', text:'Quantos caminhões o distribuidor possui?', tipo:'Numérica', peso:0, obrig:true, critica:false },
+        ],
+        rec: [
+          { id:'rec1', text:'Cais de recebimento limpo e organizado?', tipo:'Sim/Não/N.A.', peso:3, obrig:true, critica:false },
+          { id:'rec2', text:'Temperatura da câmara fria do chope', tipo:'Numérica (faixa)', peso:5, obrig:true, critica:true },
+          { id:'rec3', text:'Foto da área de recebimento', tipo:'Foto', peso:0, obrig:true, critica:false },
+        ],
+        arm: [
+          { id:'arm1', text:'Empilhadeiras com certificação em dia?', tipo:'Sim/Não/N.A.', peso:4, obrig:true, critica:true },
+          { id:'arm2', text:'Lastro de vasilhame conforme padrão?', tipo:'Sim/Não/N.A.', peso:2, obrig:false, critica:false },
+        ],
+        exp: [
+          { id:'exp1', text:'Bipagem de barris realizada corretamente?', tipo:'Sim/Não/N.A.', peso:3, obrig:true, critica:false },
+        ],
+        ger: [
+          { id:'ger1', text:'Ocorrências do período', tipo:'Texto longo', peso:0, obrig:false, critica:false },
+        ],
+      },
+      reports: [
+        { id:1, unidade:'CD Sul — Curitiba', tipo:'Distribuidor', data:'21/08', sla:'Vence em 4h', slaColor:'#B23B34', status:'pendente' },
+        { id:2, unidade:'Distribuidor Vale Norte', tipo:'Distribuidor', data:'20/08', sla:'Vence em 1 dia', slaColor:'#C08A2E', status:'pendente' },
+        { id:3, unidade:'CD Leste — Sorocaba', tipo:'Auditoria 5S', data:'19/08', sla:'No prazo', slaColor:'#3F7D52', status:'pendente' },
+        { id:4, unidade:'Distribuidor Serra Alta', tipo:'Distribuidor', data:'18/08', sla:'—', slaColor:'#8C8377', status:'aprovado' },
+      ],
+      reprovingId: null,
+      reproveComment: '',
+      selectedPracticeId: 'p1',
+      suggestionDecision: null,
+      selectedEvent: 'e1',
+    };
+  }
+
+  goDashboard = () => this.setState({ screen: 'dashboard' });
+  goCalendario = () => this.setState({ screen: 'calendario' });
+  goChecklist = () => this.setState({ screen: 'checklist' });
+  goAprovacoes = () => this.setState({ screen: 'aprovacoes' });
+  goBoasPraticas = () => this.setState({ screen: 'boaspraticas' });
+  setPeriod = (p) => this.setState({ period: p });
+  selectSection = (idx) => this.setState({ selectedSectionIdx: idx });
+
+  addQuestion = () => {
+    const sections = ['db','rec','arm','exp','ger'];
+    const sid = sections[this.state.selectedSectionIdx];
+    const list = this.state.questionsBySection[sid] || [];
+    const novo = { id: sid + (list.length + 1), text: 'Nova pergunta', tipo: 'Sim/Não/N.A.', peso: 1, obrig: false, critica: false };
+    this.setState({ questionsBySection: { ...this.state.questionsBySection, [sid]: [...list, novo] } });
+  };
+
+  toggleObrig = (sid, qid) => {
+    const list = this.state.questionsBySection[sid].map(q => q.id === qid ? { ...q, obrig: !q.obrig } : q);
+    this.setState({ questionsBySection: { ...this.state.questionsBySection, [sid]: list } });
+  };
+
+  setPeso = (sid, qid, value) => {
+    const n = Number(value) || 0;
+    const list = this.state.questionsBySection[sid].map(q => q.id === qid ? { ...q, peso: n } : q);
+    this.setState({ questionsBySection: { ...this.state.questionsBySection, [sid]: list } });
+  };
+
+  approveReport = (id) => {
+    this.setState({ reports: this.state.reports.map(r => r.id === id ? { ...r, status: 'aprovado' } : r) });
+  };
+  startReprove = (id) => this.setState({ reprovingId: id, reproveComment: '' });
+  cancelReprove = () => this.setState({ reprovingId: null, reproveComment: '' });
+  setReproveComment = (e) => this.setState({ reproveComment: e.target.value });
+  confirmReprove = () => {
+    const id = this.state.reprovingId;
+    const motivo = this.state.reproveComment || 'Ajustes solicitados pelo aprovador';
+    this.setState({
+      reports: this.state.reports.map(r => r.id === id ? { ...r, status: 'reprovado', motivo } : r),
+      reprovingId: null, reproveComment: '',
+    });
+  };
+
+  selectPractice = (id) => this.setState({ selectedPracticeId: id, suggestionDecision: null });
+  decideSuggestion = (d) => this.setState({ suggestionDecision: d });
+  selectEvent = (id) => this.setState({ selectedEvent: id });
+
+  renderVals() {
+    const s = this.state;
+    const navStyle = (active) => 'display:flex;align-items:center;gap:12px;padding:10px 20px;margin:1px 10px;border-radius:8px;cursor:pointer;font-size:13.5px;' +
+      (active ? 'color:#FAF8F5;background:#3A342C;font-weight:600;' : 'color:#B8AFA3;font-weight:500;');
+
+    const titles = { dashboard: 'Dashboard', calendario: 'Calendário de Auditorias', checklist: 'Modelos & Checklists', aprovacoes: 'Aprovações', boaspraticas: 'Banco de Boas Práticas' };
+    const subtitles = {
+      dashboard: 'Visão consolidada de conformidade, não conformidades e ações — todas as unidades',
+      calendario: 'Programação, recorrência e alertas de atraso das auditorias',
+      checklist: 'Construção e versionamento de modelos, sem intervenção técnica',
+      aprovacoes: 'Fila de aprovação por alçada, com SLA e devolução com motivo',
+      boaspraticas: 'Conhecimento curado e sugestões de IA com governança e explicabilidade',
+    };
+
+    const periodDefs = [
+      { key: '30d', label: 'Últimos 30 dias' },
+      { key: '6c', label: 'Últimos 6 ciclos' },
+      { key: 'ano', label: 'Ano corrente' },
+      { key: 'custom', label: 'Personalizado' },
+    ];
+    const periodChips = periodDefs.map(p => ({ label: p.label, activeClass: s.period === p.key ? 'active' : '', onClick: () => this.setPeriod(p.key) }));
+
+    // Bar chart: evolução da conformidade
+    const CHART_W = 460, BASE_Y = 168, TOP_Y = 20, FLOOR = 60, CEIL = 100, BAR_W = 32;
+    const months = ['Mar','Abr','Mai','Jun','Jul','Ago'];
+    const values = [74, 78, 80, 83, 85, 87];
+    const slot = CHART_W / months.length;
+    const chartBars = months.map((m, i) => {
+      const xCenter = slot * i + slot / 2;
+      const frac = (values[i] - FLOOR) / (CEIL - FLOOR);
+      const h = frac * (BASE_Y - TOP_Y);
+      const isLast = i === months.length - 1;
+      return {
+        x: (xCenter - BAR_W / 2).toFixed(1), w: BAR_W, y: (BASE_Y - h).toFixed(1), h: h.toFixed(1),
+        fill: isLast ? '#B38335' : '#EDE3CF',
+        month: m, labelX: xCenter.toFixed(1),
+        labelColor: isLast ? '#24211F' : '#A79E92', labelWeight: isLast ? '700' : '500',
+      };
+    });
+
+    // Gauge: meta de conformidade
+    const gaugeN = 14, gaugeGap = 2.6, gaugeR = 46, gaugeCx = 60, gaugeCy = 58;
+    const gaugeSpan = (180 - (gaugeN - 1) * gaugeGap) / gaugeN;
+    const gaugeFilled = Math.round((87 / 100) * gaugeN);
+    const polar = (ang) => { const rad = ang * Math.PI / 180; return { x: gaugeCx + gaugeR * Math.cos(rad), y: gaugeCy - gaugeR * Math.sin(rad) }; };
+    const gaugeSegments = Array.from({ length: gaugeN }, (_, i) => {
+      const start = 180 - i * (gaugeSpan + gaugeGap);
+      const end = start - gaugeSpan;
+      const p1 = polar(start), p2 = polar(end);
+      return {
+        d: 'M ' + p1.x.toFixed(2) + ',' + p1.y.toFixed(2) + ' A ' + gaugeR + ',' + gaugeR + ' 0 0,1 ' + p2.x.toFixed(2) + ',' + p2.y.toFixed(2),
+        color: i < gaugeFilled ? '#B38335' : '#EFEAE0',
+      };
+    });
+
+    const severityLegend = [
+      { color: '#B23B34', label: 'Crítica', count: 3, pct: '13%' },
+      { color: '#C08A2E', label: 'Maior', count: 9, pct: '39%' },
+      { color: '#453F39', label: 'Menor', count: 11, pct: '48%' },
+    ];
+
+    const avatarPalette = ['#2C4A63', '#24211F', '#8C4A3B', '#8C6726', '#3F7D52'];
+    const initialsOf = (name) => name.split(' ').filter(w => w.length > 2 && w !== '—').slice(0, 2).map(w => w[0]).join('').toUpperCase();
+
+    const rankingRaw = [
+      { unidade: 'CD Sul — Curitiba', processo: 'Distribuidor', nota: '96%', trend: '↑', delta: '+3 p.p.' },
+      { unidade: 'Distribuidor Vale Norte', processo: 'Distribuidor', nota: '91%', trend: '↑', delta: '+2 p.p.' },
+      { unidade: 'CD Leste — Sorocaba', processo: 'Interno · 5S', nota: '88%', trend: '→', delta: '0 p.p.' },
+      { unidade: 'Distribuidor Serra Alta', processo: 'Distribuidor', nota: '62%', trend: '↓', delta: '-9 p.p.' },
+      { unidade: 'Distribuidor Baía Verde', processo: 'Distribuidor', nota: '58%', trend: '↓', delta: '-11 p.p.' },
+    ];
+    const ranking = rankingRaw.map((r, i) => {
+      const num = parseInt(r.nota);
+      const trendColor = r.trend === '↑' ? '#3F7D52' : (r.trend === '↓' ? '#B23B34' : '#8C8377');
+      return {
+        ...r, initials: initialsOf(r.unidade), avatarColor: avatarPalette[i % avatarPalette.length],
+        notaColor: num < 70 ? '#B23B34' : (num < 85 ? '#C08A2E' : '#3F7D52'),
+        trendColor, trendLabel: r.trend + ' ' + r.delta,
+      };
+    });
+
+    const eventsRaw = [
+      { id: 'e1', day: 21, unidade: 'CD Sul — Curitiba', tipo: 'Distribuidor', status: 'atrasada', statusLabel: 'Atrasada' },
+      { id: 'e2', day: 24, unidade: 'Distribuidor Vale Norte', tipo: 'Distribuidor', status: 'agendada', statusLabel: 'Agendada' },
+      { id: 'e3', day: 26, unidade: 'CD Leste — Sorocaba', tipo: '5S', status: 'confirmada', statusLabel: 'Confirmada' },
+      { id: 'e4', day: 28, unidade: 'Distribuidor Serra Alta', tipo: 'Distribuidor', status: 'agendada', statusLabel: 'Agendada' },
+      { id: 'e5', day: 31, unidade: 'Fábrica Matriz', tipo: 'Segurança', status: 'agendada', statusLabel: 'Agendada' },
+    ];
+    const colorFor = (st) => st === 'atrasada' ? '#B23B34' : (st === 'confirmada' ? '#3F7D52' : '#B38335');
+    const eventList = eventsRaw.map(e => ({
+      ...e,
+      dotColor: colorFor(e.status),
+      rowStyle: 'display:flex;gap:10px;padding:9px;border-radius:10px;cursor:pointer;' + (s.selectedEvent === e.id ? 'background:#F7F4EE;' : ''),
+      pick: () => this.selectEvent(e.id),
+    }));
+
+    const days = [];
+    for (let i = 0; i < 6; i++) days.push({ num: '', event: null });
+    for (let d = 1; d <= 31; d++) days.push({ num: d, event: eventsRaw.find(e => e.day === d) || null });
+    while (days.length % 7 !== 0) days.push({ num: '', event: null });
+    const calendarDays = days.map((c, idx) => {
+      const selected = c.event && s.selectedEvent === c.event.id;
+      return {
+        key: 'd' + idx,
+        num: c.num,
+        hasEvent: !!c.event,
+        cellStyle: 'min-height:56px;border-radius:10px;padding:6px;cursor:' + (c.event ? 'pointer' : 'default') + ';' + (selected ? 'background:#FBF6EB;border:1px solid #D9A94C;' : 'border:1px solid #F5F1E9;'),
+        numStyle: 'font-size:11.5px;font-weight:' + (c.event ? '700' : '500') + ';color:' + (c.num === '' ? '#EAE4D8' : '#453F39') + ';',
+        pillStyle: 'margin-top:4px;font-size:9.5px;font-weight:700;color:#fff;background:' + (c.event ? colorFor(c.event.status) : '#000') + ';border-radius:5px;padding:2px 4px;line-height:1.2;',
+        pillLabel: c.event ? (c.event.unidade.includes(' — ') ? c.event.unidade.split(' — ')[0] : c.event.unidade.split(' ').slice(0, 2).join(' ')) : '',
+        pick: c.event ? (() => this.selectEvent(c.event.id)) : (() => {}),
+      };
+    });
+
+    const sectionDefs = [
+      { id: 'db', name: 'Dados Básicos' },
+      { id: 'rec', name: 'Recebimento' },
+      { id: 'arm', name: 'Armazenamento' },
+      { id: 'exp', name: 'Expedição' },
+      { id: 'ger', name: 'Gerenciamento Operacional' },
+    ];
+    const sectionsList = sectionDefs.map((sec, idx) => ({
+      idx, name: sec.name, count: (s.questionsBySection[sec.id] || []).length + ' perguntas',
+      style: 'display:flex;align-items:center;gap:10px;padding:11px 10px;border-radius:10px;cursor:pointer;' + (s.selectedSectionIdx === idx ? 'background:#F7F4EE;' : ''),
+      onClick: () => this.selectSection(idx),
+    }));
+    const currentSection = sectionDefs[s.selectedSectionIdx];
+    const tipoColors = {
+      'Numérica': { color: '#3B6C93', bg: '#EAF1F6' },
+      'Numérica (faixa)': { color: '#3B6C93', bg: '#EAF1F6' },
+      'Sim/Não/N.A.': { color: '#3F7D52', bg: '#E7F2EA' },
+      'Foto': { color: '#8C6726', bg: '#FBF6EB' },
+      'Texto longo': { color: '#6B6259', bg: '#F2EEE7' },
+    };
+    const questionsList = (s.questionsBySection[currentSection.id] || []).map(q => ({
+      ...q,
+      tipoColor: (tipoColors[q.tipo] || tipoColors['Texto longo']).color,
+      tipoBg: (tipoColors[q.tipo] || tipoColors['Texto longo']).bg,
+      criticaLabel: q.critica ? 'Sim' : 'Não',
+      criticaColor: q.critica ? '#B23B34' : '#A79E92',
+      obrigSwitchStyle: 'width:34px;height:18px;border-radius:10px;position:relative;cursor:pointer;background:' + (q.obrig ? '#B38335' : '#E7E1D5') + ';',
+      obrigKnobStyle: 'width:14px;height:14px;border-radius:50%;background:#fff;position:absolute;top:2px;transition:left .15s;left:' + (q.obrig ? '18px' : '2px') + ';',
+      toggleObrig: () => this.toggleObrig(currentSection.id, q.id),
+      setPeso: (e) => this.setPeso(currentSection.id, q.id, e.target.value),
+    }));
+
+    const reportsList = s.reports.map((r, i) => {
+      const isReproving = s.reprovingId === r.id;
+      const isPendente = r.status === 'pendente' && !isReproving;
+      const statusMap = { aprovado: { label: 'Aprovado', color: '#3F7D52' }, reprovado: { label: 'Reprovado', color: '#B23B34' } };
+      return {
+        ...r, initials: initialsOf(r.unidade), avatarColor: avatarPalette[i % avatarPalette.length],
+        slaLabel: r.sla,
+        showActions: isPendente,
+        showFinal: !isPendente && !isReproving,
+        isReproving,
+        statusLabel: statusMap[r.status] ? statusMap[r.status].label : '',
+        statusColor: statusMap[r.status] ? statusMap[r.status].color : '#8C8377',
+        showMotivo: r.status === 'reprovado' && !!r.motivo,
+        motivo: r.motivo || '',
+        reproveComment: s.reproveComment,
+        approveClick: () => this.approveReport(r.id),
+        startReproveClick: () => this.startReprove(r.id),
+        cancelReproveClick: () => this.cancelReprove(),
+        confirmReproveClick: () => this.confirmReprove(),
+        setReproveComment: (e) => this.setReproveComment(e),
+      };
+    });
+
+    const practicesRaw = [
+      { id: 'p1', title: 'Sensor de temperatura com alarme sonoro na câmara fria', processo: 'Recebimento', origem: 'CD Sul — Curitiba', status: 'aprovada', description: 'Instalação de sensor com alarme sonoro acionado quando a câmara fria excede a faixa segura de temperatura, permitindo correção imediata antes da perda de produto.' },
+      { id: 'p2', title: 'Checklist visual de organização de cais antes do turno', processo: 'Recebimento', origem: 'CD Leste — Sorocaba', status: 'aprovada', description: 'Verificação visual padronizada da área de cais, com fotos de referência, aplicada no início de cada turno de recebimento.' },
+      { id: 'p3', title: 'Etiquetagem por cores no lastro de vasilhame', processo: 'Armazenamento', origem: 'Distribuidor Vale Norte', status: 'curadoria', description: 'Uso de etiquetas coloridas por lote no lastro de vasilhame para facilitar a rotatividade e identificar vasilhames fora do padrão.' },
+      { id: 'p4', title: 'Rota de bipagem em dupla conferência', processo: 'Expedição', origem: 'Fábrica Matriz', status: 'aprovada', description: 'Conferência dupla na bipagem de barris antes da expedição, reduzindo divergências entre o físico e o sistema.' },
+    ];
+    const statusLbl = { aprovada: { label: 'Aprovada', color: '#3F7D52' }, curadoria: { label: 'Em curadoria', color: '#C08A2E' } };
+    const practicesList = practicesRaw.map(p => ({
+      ...p,
+      statusLabel: statusLbl[p.status].label,
+      statusColor: statusLbl[p.status].color,
+      style: 'padding:12px;border-radius:12px;cursor:pointer;margin-bottom:4px;' + (s.selectedPracticeId === p.id ? 'background:#FBF6EB;border:1px solid #D9A94C;' : ''),
+      onClick: () => this.selectPractice(p.id),
+    }));
+    const selectedPractice = practicesRaw.find(p => p.id === s.selectedPracticeId) || practicesRaw[0];
+
+    const decisionMap = { aceita: { label: '✓ Sugestão aceita e incorporada ao plano de ação', color: '#3F7D52' }, adaptada: { label: '✓ Sugestão adaptada e incorporada ao plano de ação', color: '#3F7D52' }, recusada: { label: '✕ Sugestão recusada — motivo registrado em log', color: '#B23B34' } };
+
+    return {
+      pageTitle: titles[s.screen], pageSubtitle: subtitles[s.screen],
+      isDashboard: s.screen === 'dashboard', isCalendario: s.screen === 'calendario', isChecklist: s.screen === 'checklist',
+      isAprovacoes: s.screen === 'aprovacoes', isBoasPraticas: s.screen === 'boaspraticas',
+      dashStyle: navStyle(s.screen === 'dashboard'), calStyle: navStyle(s.screen === 'calendario'), chkStyle: navStyle(s.screen === 'checklist'),
+      aprStyle: navStyle(s.screen === 'aprovacoes'), bpStyle: navStyle(s.screen === 'boaspraticas'),
+      goDashboard: this.goDashboard, goCalendario: this.goCalendario, goChecklist: this.goChecklist, goAprovacoes: this.goAprovacoes, goBoasPraticas: this.goBoasPraticas,
+      hasPending: s.reports.some(r => r.status === 'pendente'), pendingCount: s.reports.filter(r => r.status === 'pendente').length,
+      periodChips,
+      chartBars, gaugeSegments, severityLegend,
+      ranking,
+      calendarDays, eventList,
+      sectionsList, currentSectionName: currentSection.name, questionsList, addQuestionClick: this.addQuestion,
+      reportsList,
+      practicesList, selectedPractice,
+      noDecision: !s.suggestionDecision, hasDecision: !!s.suggestionDecision,
+      decisionLabel: s.suggestionDecision ? decisionMap[s.suggestionDecision].label : '',
+      decisionColor: s.suggestionDecision ? decisionMap[s.suggestionDecision].color : '',
+      aceitarClick: () => this.decideSuggestion('aceita'), adaptarClick: () => this.decideSuggestion('adaptada'), recusarClick: () => this.decideSuggestion('recusada'),
+    };
+  }
+}
+</script>
+</body>
+</html>
